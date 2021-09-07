@@ -1,0 +1,48 @@
+
+
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal @socket, CrudWeb.UsuariosLive.FormComponent,
+    id: @usuarios.id || :new,
+    title: @page_title,
+    action: @live_action,
+    usuarios: @usuarios,
+    return_to: Routes.usuarios_index_path(@socket, :index) %>
+<% end %>
+
+<section class="bg-light">
+  <h1 class="text-center">Lista de usuarios activos</h1>
+  <div class="row">
+      <div class="col"></div>
+      <div class="col-8">
+        <table class="table table-success table-striped">
+                <thead>
+                    <th scope="col">&nbsp;</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Usuario</th>
+                    <th scope="col">Contraseña</th>
+                    <th scope="col">Acciones</th>
+                </thead>
+                <tbody id="usuarios">
+                  <%= for usuarios <- @usuarios_collection do %>
+                    <tr id="usuarios-<%= usuarios.id %>">
+                        <td>&nbsp;</td>
+                        <td class="text-md-start" scope="row"><%= usuarios.id %></td>
+                        <td class="text-md-start"><%= usuarios.usuario %></td>
+                        <td class="text-md-start"><%= usuarios.pass %></td>
+                        <td class="text-md-start"><%= usuarios.nombre %></td>
+                        <td>
+                          <span class="button is-danger"><%= live_redirect "Mostrar", to: Routes.usuarios_show_path(@socket, :show, usuarios) %></span>&nbsp;
+                          <span class="button is-primary"><%= live_patch "Editar", to: Routes.usuarios_index_path(@socket, :edit, usuarios) %></span>&nbsp;
+                          <span class="button is-info"><%= link "Borrar", to: "#", phx_click: "delete", phx_value_id: usuarios.id, data: [confirm: "Desea eliminar el perfil?"] %></span>
+                        </td>
+                    </tr>
+                  <%= end %>
+                </tbody>
+                <span class="button is-warning "><%= live_patch "Crear Usuario", to: Routes.usuarios_index_path(@socket, :new) %></span>&nbsp;&nbsp;
+                <span class="button is-success"><%=  live_redirect "Buscar usuario", to: Routes.usuarios_search_path(@socket, :search)%></span>
+            </table>
+      </div>
+      <div class="col"></div>
+  </div>
+</section>

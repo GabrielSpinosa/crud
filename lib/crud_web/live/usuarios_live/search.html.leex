@@ -1,0 +1,70 @@
+ <div class="container">
+   <div class="row ">
+        <div class="col">
+
+        </div>
+        <div class="col">
+            <div class="col-sm" >
+                <form id="usuario-search" phx-submit="usuario-search">
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Consulte un nombre de usuario</label>
+                    <input type="text"
+                        id="usuario"
+                        name="usuario"
+                        placeholder="Usuario"
+                        autofocus autocomplete="off"
+                        value="<%= @usuario %>"
+                        <%= if @loading, do: "readonly" %>
+                        />
+                </div>
+                <button type="submit" class="button is-success">Submit</button>
+                </form>
+            </div>
+        </div>
+        <div class="col">
+
+        </div>
+    </div>
+
+    <%= if @loading do %>
+        <div class="loader">
+          Loading...
+        </div>
+    <% end %>
+
+    <%= if @consultado do %>
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-8">
+                <table class="table table-success table-striped">
+                        <thead>
+                            <th scope="col">&nbsp;</th>
+                            <th scope="col">ID</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Usuario</th>
+                            <th scope="col">Contraseña</th>
+                            <th scope="col">Acciones</th>
+                        </thead>
+                        <tbody id="usuarios">
+                        <%= for usuarios <- @usuarios_collection do %>
+                            <tr id="usuarios-<%= usuarios.id %>">
+                                <td>&nbsp;</td>
+                                <td class="text-md-start" scope="row"><%= usuarios.id %></td>
+                                <td class="text-md-start"><%= usuarios.nombre %></td>
+                                <td class="text-md-start"><%= usuarios.usuario %></td>
+                                <td class="text-md-start"><%= usuarios.pass %></td>
+                                <td>
+                                <span class="button is-danger"><%= live_redirect "Mostrar", to: Routes.usuarios_show_path(@socket, :show, usuarios) %></span>&nbsp;
+                                <span class="button is-primary"><%= live_patch "Editar", to: Routes.usuarios_index_path(@socket, :edit, usuarios) %></span>&nbsp;
+                                <span class="button is-info"><%= link "Borrar", to: "#", phx_click: "delete", phx_value_id: usuarios.id, data: [confirm: "Desea eliminar el perfil?"] %></span>
+                                </td>
+                            </tr>
+                        <%= end %>
+                        </tbody>
+                    </table>
+            </div>
+            <div class="col"></div>
+        </div>
+    <% end %>
+
+ </div>

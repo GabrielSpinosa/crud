@@ -1,0 +1,22 @@
+<h2><%= @title %></h2>
+
+<%= f = form_for @changeset, "#",
+  id: "usuarios-form",
+  phx_target: @myself,
+  phx_change: "validate",
+  phx_submit: "save" %>
+
+  <%= label f, :usuario %>
+  <%= text_input f, :usuario %>
+  <%= error_tag f, :usuario %>
+
+  <%= label f, :pass %>
+  <%= text_input f, :pass %>
+  <%= error_tag f, :pass %>
+
+  <%= label f, :nombre %>
+  <%= text_input f, :nombre %>
+  <%= error_tag f, :nombre %>
+
+  <%= submit "Save", phx_disable_with: "Saving..." %>
+</form>

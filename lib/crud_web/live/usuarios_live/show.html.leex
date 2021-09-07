@@ -1,0 +1,33 @@
+<h1><%= @usuarios.nombre%></h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, CrudWeb.UsuariosLive.FormComponent,
+    id: @usuarios.id,
+    title: @page_title,
+    action: @live_action,
+    usuarios: @usuarios,
+    return_to: Routes.usuarios_show_path(@socket, :show, @usuarios) %>
+<%else %>
+
+<ul>
+
+  <li>
+    <strong>Usuario:</strong>
+    <%= @usuarios.usuario %>
+  </li>
+
+  <li>
+    <strong>Pass:</strong>
+    <%= @usuarios.pass %>
+  </li>
+
+  <li>
+    <strong>Nombre:</strong>
+    <%= @usuarios.nombre %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.usuarios_show_path(@socket, :edit, @usuarios), class: "button" %></span>
+<span><%= live_redirect "Back", to: Routes.usuarios_index_path(@socket, :index) %></span>
+<% end %>
